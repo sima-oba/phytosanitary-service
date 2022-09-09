@@ -1,0 +1,13 @@
+*
+
+!application
+!cli
+!domain
+!infrastructure
+!config.py
+!logging.ini
+!main.py
+!requirements.txt
+!requirements.dev.txt
+
+**/__pycache__

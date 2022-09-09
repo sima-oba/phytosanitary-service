@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phytosanitary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: phytosanitary-rest
+  template:
+    metadata:
+      labels:
+        app: phytosanitary-rest
+    spec:
+      containers:
+      - name: phytosanitary-rest
+        image: $REGISTRY-docker.pkg.dev/$PROJECT_ID/sima/phytosanitary:$IMAGE_TAG
+        imagePullPolicy: Always
+        args: ["start-gunicorn-server", "--workers", "8"]
+        ports:
+        - name: rest
+          containerPort: 5000
+        envFrom:
+          - secretRef:
+              name: phytosanitary-secret
+          - configMapRef:
+              name: phytosanitary-conf
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "100m"
+      - name: phytosanitary-kafka
+        image: $REGISTRY-docker.pkg.dev/$PROJECT_ID/sima/phytosanitary:$IMAGE_TAG
+        imagePullPolicy: Always
+        args: ["start-kafka-consumer"]
+        envFrom:
+          - secretRef:
+              name: phytosanitary-secret
+          - configMapRef:
+              name: phytosanitary-conf
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "50m"

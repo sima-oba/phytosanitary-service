@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: phytosanitary-service
+spec:
+  type: ClusterIP
+  selector:
+    app: phytosanitary-rest
+  ports:
+  - name: rest
+    port: 5000
+    targetPort: 5000
