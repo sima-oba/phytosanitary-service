@@ -17,7 +17,7 @@ class VisitRepository(IVisitRepository):
         return [Visit.from_dict(doc) for doc in docs]
 
     def find_by_farm(self, farm_id: str) -> List[Visit]:
-        docs = self._collection.find_one({'farm_id': farm_id})
+        docs = self._collection.find({'farm_id': farm_id})
 
         return [
             Visit.from_dict(doc) for doc
