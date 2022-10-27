@@ -35,28 +35,28 @@ class PhytosanitaryService:
 
     def save(self, data: dict) -> Tuple[Farm, Visit]:
         farm = self._farms.find_by_imported_id(data['imported_id'])
-        # new_farm = {
-        #     'imported_id':          data['imported_id'],
-        #     'name':                 data['farm_name'],
-        #     'address':              data['address'],
-        #     'city':                 data['city'],
-        #     'classification':       data['classification'],
-        #     'nucleos':              data['nucleos'],
-        #     'cultivation_system':   data['cultivation_system'],
-        #     'irrigation_system':    data['irrigation_system'],
-        #     'dryland_area':         data['dryland_area'],
-        #     'irrigated_area':       data['irrigated_area'],
-        #     'owner':                data['owner'],
-        #     'owner_name':           data['owner_name'],
-        #     'geometry':             data['geometry']
-        # }
+        new_farm = {
+            'imported_id':          data['imported_id'],
+            'name':                 data['farm_name'],
+            'address':              data['address'],
+            'city':                 data['city'],
+            'classification':       data['classification'],
+            'nucleos':              data['nucleos'],
+            'cultivation_system':   data['cultivation_system'],
+            'irrigation_system':    data['irrigation_system'],
+            'dryland_area':         data['dryland_area'],
+            'irrigated_area':       data['irrigated_area'],
+            'owner':                data['owner'],
+            'owner_name':           data['owner_name'],
+            'geometry':             data['geometry']
+        }
 
-        # if old_farm is None:
-        #     farm = self._farms.add(Farm.new(new_farm))
-        #     self._log.debug(f'added farm {farm._id}')
-        # else:
-        #     farm = self._farms.update(old_farm.merge(new_farm))
-        #     self._log.debug(f'updated farm {farm._id}')
+        if farm is None:
+            farm = self._farms.add(Farm.new(new_farm))
+            self._log.debug(f'added farm {farm._id}')
+        else:
+            farm = self._farms.update(farm.merge(new_farm))
+            self._log.debug(f'updated farm {farm._id}')
 
         old_visit = self._visits.find_by_date(farm._id, data['visit_date'])
         new_visit = {
